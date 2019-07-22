@@ -134,8 +134,6 @@ if __name__ == "__main__":
     validation_init_op = iterator.make_initializer(test_dataset)
     init_op = tf.global_variables_initializer()
 
-    train_writer = tf.summary.FileWriter(args.output_path + '/log/train')
-    test_writer = tf.summary.FileWriter(args.output_path + '/log/test')
 
     tf.summary.scalar('loss_ss', loss_op)
     merge_op = tf.summary.merge_all()
@@ -144,7 +142,10 @@ if __name__ == "__main__":
     loss_ep = 0.70
     saver = tf.train.Saver()
 
-    with tf.Session() as sess:    
+    with tf.Session() as sess:  
+        train_writer = tf.summary.FileWriter(args.output_path + '/log/train', sess.graph)
+        test_writer = tf.summary.FileWriter(args.output_path + '/log/test', sess.graph)
+
         sess.run(init_op)
 
         for i in range(number_epochs):
